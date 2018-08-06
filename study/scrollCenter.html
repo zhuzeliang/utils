@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <title>Document</title>
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    ul {
+        list-style: none;
+    }
+
+    .nav-list-fixed {
+        position: sticky;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+    }
+
+    .nav-list {
+        white-space: nowrap;
+        overflow-y: auto;
+    }
+
+    .nav {
+        display: inline-block;
+        height: 40px;
+        line-height: 40px;
+        font-size: 16px;
+        padding: 0 10px;
+    }
+
+    .nav.active {
+        color: red;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="nav-list-fixed">
+        <ul class="nav-list" ref="homeNavs">
+            <li class="nav">推荐</li>
+            <li class="nav">热点</li>
+            <li class="nav">社会</li>
+            <li class="nav">娱乐</li>
+            <li class="nav">科技</li>
+            <li class="nav">汽车</li>
+            <li class="nav">体育</li>
+            <li class="nav">财经</li>
+        </ul>
+    </div>
+    <script type="text/javascript">
+    window.onload = function() {
+        let homeNavs = document.querySelector(".nav-list")
+        let navs = document.querySelectorAll(".nav")
+        homeNavs.addEventListener("click", function(e) {
+            console.log(e.target.nodeName.toLowerCase())
+            for(let i = 0; i < navs.length;i++){
+            	removeClass(navs[i], 'active')
+            }
+            addClass(e.target, 'active')
+            if (e.target.nodeName.toLowerCase() === 'li') {
+                let dom = e.target
+                let windowWidthHalf = document.documentElement.clientWidth / 2
+                let scrollLeft = homeNavs.scrollLeft
+                let domWidthHalf = dom.clientWidth / 2
+                let domLeft = dom.getBoundingClientRect().left
+                let distance = domLeft + scrollLeft - windowWidthHalf + domWidthHalf
+                console.log(distance)
+                homeNavs.scrollLeft = distance
+
+            }
+        })
+
+
+        function addClass(obj, className) {
+            //如果原来没有class
+            if (obj.className == "") {
+                obj.className = className;
+            } else {
+                var _index = classIndexOf(obj, className);
+                //如果原来没有这个新加的class
+                if (_index == -1) {
+                    obj.className += " " + className;
+                }
+            }
+        }
+
+        function removeClass(obj, className) {
+            //如果以前的元素不为空
+            if (obj.className != "") {
+                var arrClassName = obj.className.split(" ");
+                var _index = classIndexOf(obj, className);
+                //如果存在要删除的class
+                if (_index != -1) {
+                    arrClassName.splice(_index, 1);
+                }
+                obj.className = arrClassName.join(" ");
+            }
+        }
+
+        //检验是否包含有某一个class
+        function classIndexOf(obj, v) {
+            var arrClassName = obj.className.split(" ");
+            for (var i = 0; i < arrClassName.length; i++) {
+                if (arrClassName[i] == v) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+    }
+    </script>
+</body>
+
+</html>
